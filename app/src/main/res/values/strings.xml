@@ -3,4 +3,5 @@
     <string name="timer">Timer</string>
     <string name="solves">Solves</string>
     <string name="profile">Profile</string>
+    <string name="solving">Solving</string>
 </resources>
