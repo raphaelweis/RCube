@@ -4,4 +4,6 @@
     <string name="solves">Solves</string>
     <string name="profile">Profile</string>
     <string name="solving">Solving</string>
+    <string name="three_by_three">3x3</string>
+    <string name="cycle_description">Regenerate a scramble</string>
 </resources>
