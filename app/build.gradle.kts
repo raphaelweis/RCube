@@ -41,23 +41,26 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.androidx.compose.bom))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.material3.adaptive.navigation.suite)
-    implementation(libs.lib.scrambles)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.annotation)
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.annotation)
+    ksp(libs.androidx.room.compiler)
+
+    implementation(libs.material3.adaptive.navigation.suite)
+
+    implementation(libs.lib.scrambles)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

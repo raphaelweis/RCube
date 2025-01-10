@@ -7,12 +7,16 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.raphaelweis.rcube.RCubeApplication
-import com.raphaelweis.rcube.ui.destinations.profile.timer.TimerViewModel
+import com.raphaelweis.rcube.ui.destinations.solves.SolvesViewModel
+import com.raphaelweis.rcube.ui.destinations.timer.TimerViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
             TimerViewModel(rCubeApplication().container.solvesRepository)
+        }
+        initializer {
+            SolvesViewModel(rCubeApplication().container.solvesRepository)
         }
     }
 }

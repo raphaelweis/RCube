@@ -1,4 +1,4 @@
-package com.raphaelweis.rcube.ui.destinations.profile.timer
+package com.raphaelweis.rcube.ui.destinations.timer
 
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column

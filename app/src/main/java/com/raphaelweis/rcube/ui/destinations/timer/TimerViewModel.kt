@@ -1,5 +1,6 @@
-package com.raphaelweis.rcube.ui.destinations.profile.timer
+package com.raphaelweis.rcube.ui.destinations.timer
 
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.raphaelweis.rcube.data.Solve
@@ -12,10 +13,10 @@ import org.worldcubeassociation.tnoodle.scrambles.PuzzleRegistry
 
 class TimerViewModel(private val solvesRepository: SolvesRepository) : ViewModel() {
     var isSolving = mutableStateOf(false)
-    var elapsedTime = mutableStateOf(0L)
-    var formerScramble = mutableStateOf("")
+    var elapsedTime = mutableLongStateOf(0L)
     var currentScramble = mutableStateOf("")
 
+    private var formerScramble = ""
     private val scrambler = PuzzleRegistry.THREE.scrambler
     private val timerScope = CoroutineScope(Dispatchers.Default)
     private val scrambleScope = CoroutineScope(Dispatchers.Default)
@@ -29,14 +30,14 @@ class TimerViewModel(private val solvesRepository: SolvesRepository) : ViewModel
         if (!isSolving.value) {
             val startTime = System.currentTimeMillis()
             isSolving.value = true
-            elapsedTime.value = 0
+            elapsedTime.longValue = 0
 
-            formerScramble.value = currentScramble.value
+            formerScramble = currentScramble.value
             getNewScramble()
 
             timerScope.launch {
                 while (isSolving.value) {
-                    elapsedTime.value = System.currentTimeMillis() - startTime
+                    elapsedTime.longValue = System.currentTimeMillis() - startTime
                     delay(TIMER_UPDATE_INTERVAL)
                 }
             }
@@ -56,9 +57,9 @@ class TimerViewModel(private val solvesRepository: SolvesRepository) : ViewModel
         solvesRepositoryScope.launch {
             solvesRepository.insertSolve(
                 Solve(
-                    time = elapsedTime.value,
+                    time = elapsedTime.longValue,
                     date = System.currentTimeMillis(),
-                    scramble = formerScramble.value
+                    scramble = formerScramble
                 )
             )
         }
