@@ -17,9 +17,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.raphaelweis.rcube.R
-import com.raphaelweis.rcube.ui.destinations.FavoritesDestination
-import com.raphaelweis.rcube.ui.destinations.HomeDestination
-import com.raphaelweis.rcube.ui.destinations.ShoppingDestination
+import com.raphaelweis.rcube.ui.destinations.profile.solves.SolvesDestination
+import com.raphaelweis.rcube.ui.destinations.profile.timer.TimerDestination
+import com.raphaelweis.rcube.ui.destinations.profile.ShoppingDestination
 
 enum class AppDestinations(
     val routeName: String,
@@ -85,8 +85,8 @@ fun MainNavigationSuiteScaffold() {
             startDestination = AppDestinations.TIMER.routeName,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }) {
-            composable(AppDestinations.TIMER.routeName) { HomeDestination() }
-            composable(AppDestinations.SOLVES.routeName) { FavoritesDestination() }
+            composable(AppDestinations.TIMER.routeName) { TimerDestination() }
+            composable(AppDestinations.SOLVES.routeName) { SolvesDestination() }
             composable(AppDestinations.PROFILE.routeName) { ShoppingDestination() }
         }
     }

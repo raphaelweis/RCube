@@ -1,4 +1,4 @@
-package com.raphaelweis.rcube.ui.destinations
+package com.raphaelweis.rcube.ui.destinations.profile.timer
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -9,9 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -23,43 +21,26 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.raphaelweis.rcube.R
-import com.raphaelweis.rcube.ui.components.Scramble
-import com.raphaelweis.rcube.ui.components.TIMER_DELAY
-import com.raphaelweis.rcube.ui.components.TIMER_UPDATE_INTERVAL
-import com.raphaelweis.rcube.ui.components.Timer
+import com.raphaelweis.rcube.ui.AppViewModelProvider
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeDestination() {
+fun TimerDestination() {
+    val timerViewModel: TimerViewModel = viewModel(factory = AppViewModelProvider.Factory)
+
     val timerDelayScope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
 
     val initialTimerColor = MaterialTheme.colorScheme.onSurface
     val intermediaryTimerColor = MaterialTheme.colorScheme.tertiary
     val finalTimerColor = MaterialTheme.colorScheme.primary
-
-    var isPressed by rememberSaveable { mutableStateOf(false) }
-    var isSolving by rememberSaveable { mutableStateOf(false) }
     var timerColor by remember { mutableStateOf(initialTimerColor) }
 
-    var elapsedTime by rememberSaveable { mutableLongStateOf(0L) }
-    var startTime by rememberSaveable { mutableLongStateOf(0L) }
-
-    var currentScramble by rememberSaveable { mutableStateOf("") }
-
-    LaunchedEffect(isSolving) {
-        if (isSolving) {
-            elapsedTime = 0
-            startTime = System.currentTimeMillis()
-            while (isSolving) {
-                elapsedTime = System.currentTimeMillis() - startTime
-                delay(TIMER_UPDATE_INTERVAL)
-            }
-        }
-    }
+    var isPressed by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(topBar = {
         TopAppBar(title = { Text(stringResource(R.string.three_by_three)) })
@@ -68,8 +49,8 @@ fun HomeDestination() {
             .fillMaxSize()
             .pointerInput(Unit) {
                 detectTapGestures(onPress = {
-                    if (isSolving) {
-                        isSolving = false
+                    if (timerViewModel.isSolving.value) {
+                        timerViewModel.stopTimer()
                         return@detectTapGestures
                     }
 
@@ -91,16 +72,16 @@ fun HomeDestination() {
                     timerColor = initialTimerColor
 
                     if (isProperlyReleased && timerReady) {
-                        isSolving = true
-                        currentScramble = ""
+                        timerViewModel.startTimer()
                     }
                 })
             }, contentAlignment = Alignment.Center, content = {
-            Scramble(paddingValues,
-                currentScramble,
-                onCurrentScrambleChange = { currentScramble = it }, isSolving
+            if (!timerViewModel.isSolving.value) Scramble(
+                paddingValues, viewModel = timerViewModel
             )
-            Timer(paddingValues, isSolving, elapsedTime, timerColor)
+            Timer(
+                paddingValues, timerColor, viewModel = timerViewModel
+            )
         })
     })
 }

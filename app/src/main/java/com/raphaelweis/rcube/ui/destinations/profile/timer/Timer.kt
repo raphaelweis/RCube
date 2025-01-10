@@ -1,4 +1,4 @@
-package com.raphaelweis.rcube.ui.components
+package com.raphaelweis.rcube.ui.destinations.profile.timer
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -7,8 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import com.raphaelweis.rcube.R
 
 const val TIMER_DELAY: Long = 200
 const val TIMER_UPDATE_INTERVAL: Long = 10
@@ -16,9 +14,8 @@ const val TIMER_UPDATE_INTERVAL: Long = 10
 @Composable
 fun Timer(
     padding: PaddingValues,
-    isSolving: Boolean,
-    elapsedTime: Long,
     timerColor: Color,
+    viewModel: TimerViewModel,
 ) {
     fun formatTime(timeMs: Long): String {
         val seconds = timeMs / 1000
@@ -31,7 +28,7 @@ fun Timer(
     }
 
     Text(
-        text = if (isSolving) stringResource(R.string.solving) else formatTime(elapsedTime),
+        text = formatTime(viewModel.elapsedTime.value),
         color = timerColor,
         style = MaterialTheme.typography.displayLarge,
         modifier = Modifier.padding(padding)
