@@ -17,8 +17,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.raphaelweis.rcube.R
-import com.raphaelweis.rcube.ui.destinations.profile.solves.SolvesDestination
-import com.raphaelweis.rcube.ui.destinations.profile.timer.TimerDestination
+import com.raphaelweis.rcube.ui.destinations.solves.SolvesDestination
+import com.raphaelweis.rcube.ui.destinations.timer.TimerDestination
 import com.raphaelweis.rcube.ui.destinations.profile.ShoppingDestination
 
 enum class AppDestinations(

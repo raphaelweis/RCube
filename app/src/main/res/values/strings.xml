@@ -6,4 +6,9 @@
     <string name="solving">Solving</string>
     <string name="three_by_three">3x3</string>
     <string name="cycle_description">Regenerate a scramble</string>
+    <string name="delete_solve">Delete solve</string>
+    <string name="delete_solve_confirmation_title">Delete solve?</string>
+    <string name="delete_solve_confirmation_description">This solve will be permanently deleted.</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="delete">Delete</string>
 </resources>

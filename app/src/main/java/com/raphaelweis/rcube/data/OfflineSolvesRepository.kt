@@ -9,7 +9,7 @@ class OfflineSolvesRepository(private val solvesDAO: SolvesDAO) : SolvesReposito
 
     override suspend fun insertSolve(solve: Solve) = solvesDAO.insert(solve)
 
-    override suspend fun deleteSolve(solve: Solve) = solvesDAO.delete(solve)
+    override suspend fun deleteSolve(id: Int) = solvesDAO.delete(id)
 
     override suspend fun updateSolve(solve: Solve) = solvesDAO.update(solve)
 }

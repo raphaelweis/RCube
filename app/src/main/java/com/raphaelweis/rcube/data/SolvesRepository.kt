@@ -9,7 +9,7 @@ interface SolvesRepository {
 
     suspend fun insertSolve(solve: Solve)
 
-    suspend fun deleteSolve(solve: Solve)
+    suspend fun deleteSolve(id: Int)
 
     suspend fun updateSolve(solve: Solve)
 }
