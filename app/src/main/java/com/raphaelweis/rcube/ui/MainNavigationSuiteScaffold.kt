@@ -13,13 +13,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.raphaelweis.rcube.R
 import com.raphaelweis.rcube.ui.destinations.solves.SolvesDestination
 import com.raphaelweis.rcube.ui.destinations.timer.TimerDestination
-import com.raphaelweis.rcube.ui.destinations.profile.ShoppingDestination
+import com.raphaelweis.rcube.ui.destinations.profile.ProfileDestination
 
 enum class AppDestinations(
     val routeName: String,
@@ -52,8 +53,8 @@ enum class AppDestinations(
 }
 
 @Composable
-fun MainNavigationSuiteScaffold() {
-    val navController = rememberNavController()
+fun MainNavigationSuiteScaffold(mainNavController: NavHostController) {
+    val bottomNavController = rememberNavController()
     var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.TIMER.routeName) }
 
     NavigationSuiteScaffold(navigationSuiteItems = {
@@ -71,8 +72,8 @@ fun MainNavigationSuiteScaffold() {
                 selected = selected,
                 onClick = {
                     currentDestination = destination.routeName
-                    navController.navigate(destination.routeName) {
-                        popUpTo(navController.graph.startDestinationId) {
+                    bottomNavController.navigate(destination.routeName) {
+                        popUpTo(bottomNavController.graph.startDestinationId) {
                             saveState = true
                         }
                         launchSingleTop = true
@@ -81,13 +82,13 @@ fun MainNavigationSuiteScaffold() {
                 })
         }
     }) {
-        NavHost(navController = navController,
+        NavHost(navController = bottomNavController,
             startDestination = AppDestinations.TIMER.routeName,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }) {
             composable(AppDestinations.TIMER.routeName) { TimerDestination() }
             composable(AppDestinations.SOLVES.routeName) { SolvesDestination() }
-            composable(AppDestinations.PROFILE.routeName) { ShoppingDestination() }
+            composable(AppDestinations.PROFILE.routeName) { ProfileDestination(mainNavController = mainNavController) }
         }
     }
 }

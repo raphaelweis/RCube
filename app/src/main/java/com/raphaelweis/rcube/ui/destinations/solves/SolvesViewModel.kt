@@ -2,8 +2,8 @@ package com.raphaelweis.rcube.ui.destinations.solves
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.raphaelweis.rcube.data.Solve
-import com.raphaelweis.rcube.data.SolvesRepository
+import com.raphaelweis.rcube.data.entities.Solve
+import com.raphaelweis.rcube.data.repositories.SolvesRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
