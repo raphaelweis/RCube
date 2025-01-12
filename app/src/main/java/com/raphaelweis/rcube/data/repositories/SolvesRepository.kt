@@ -1,5 +1,6 @@
-package com.raphaelweis.rcube.data
+package com.raphaelweis.rcube.data.repositories
 
+import com.raphaelweis.rcube.data.entities.Solve
 import kotlinx.coroutines.flow.Flow
 
 interface SolvesRepository {

@@ -1,9 +1,10 @@
-package com.raphaelweis.rcube.data
+package com.raphaelweis.rcube.data.daos
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.raphaelweis.rcube.data.entities.Solve
 import kotlinx.coroutines.flow.Flow
 
 @Dao

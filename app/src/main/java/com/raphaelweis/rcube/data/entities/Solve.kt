@@ -1,4 +1,4 @@
-package com.raphaelweis.rcube.data
+package com.raphaelweis.rcube.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

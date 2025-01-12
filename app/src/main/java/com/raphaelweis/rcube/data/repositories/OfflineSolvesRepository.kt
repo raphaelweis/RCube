@@ -1,5 +1,7 @@
-package com.raphaelweis.rcube.data
+package com.raphaelweis.rcube.data.repositories
 
+import com.raphaelweis.rcube.data.entities.Solve
+import com.raphaelweis.rcube.data.daos.SolvesDAO
 import kotlinx.coroutines.flow.Flow
 
 class OfflineSolvesRepository(private val solvesDAO: SolvesDAO) : SolvesRepository {

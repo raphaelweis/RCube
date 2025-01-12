@@ -11,4 +11,11 @@
     <string name="delete_solve_confirmation_description">This solve will be permanently deleted.</string>
     <string name="dismiss">Dismiss</string>
     <string name="delete">Delete</string>
+    <string name="you_have_not_activated_your_profile">You have not activated your profile. Online features of the applications will not be available until you do.</string>
+    <string name="activate_profile">Activate profile</string>
+    <string name="activate_profile_dialog_title">Activate profile ?</string>
+    <string name="activate_profile_dialog_body">Activating your profile is necessary to access online features of the RCube application. Before activation, you will be prompted for a username and date of birth. This data will be publicly available. By activating your profile, you consent to us moving your data from your device to a remote server.</string>
+    <string name="cancel">Cancel</string>
+    <string name="profile_information">Profile information</string>
+    <string name="no_solves">You haven\'t done any solves yet.</string>
 </resources>
