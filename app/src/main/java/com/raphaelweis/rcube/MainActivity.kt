@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Serializable
-object MainNavigationScaffold
+data class MainNavigationScaffold(val screenId: Int)
 
 @Serializable
 object ProfileInformationDialog
@@ -40,10 +40,13 @@ fun MainScreen() {
 
     RCubeTheme {
         Surface(color = MaterialTheme.colorScheme.surface) {
-            NavHost(navController = mainNavController, startDestination = MainNavigationScaffold) {
-                composable<MainNavigationScaffold>(enterTransition = { EnterTransition.None }) {
+            NavHost(
+                navController = mainNavController,
+                startDestination = MainNavigationScaffold(screenId = 0)
+            ) {
+                composable<MainNavigationScaffold>(enterTransition = { EnterTransition.None }) { backStackEntry ->
                     MainNavigationSuiteScaffold(
-                        mainNavController = mainNavController
+                        mainNavController = mainNavController, backStackEntry = backStackEntry
                     )
                 }
                 composable<ProfileInformationDialog>(enterTransition = {

@@ -13,10 +13,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.raphaelweis.rcube.MainNavigationScaffold
 import com.raphaelweis.rcube.R
 import com.raphaelweis.rcube.ui.destinations.solves.SolvesDestination
 import com.raphaelweis.rcube.ui.destinations.timer.TimerDestination
@@ -53,9 +56,23 @@ enum class AppDestinations(
 }
 
 @Composable
-fun MainNavigationSuiteScaffold(mainNavController: NavHostController) {
+fun MainNavigationSuiteScaffold(
+    mainNavController: NavHostController,
+    backStackEntry: NavBackStackEntry
+) {
+    val mainNavigationScaffold: MainNavigationScaffold = backStackEntry.toRoute()
     val bottomNavController = rememberNavController()
-    var currentDestination by rememberSaveable { mutableStateOf(AppDestinations.TIMER.routeName) }
+
+    val startDestination: String = when (mainNavigationScaffold.screenId) {
+        0 -> AppDestinations.TIMER.routeName
+        1 -> AppDestinations.SOLVES.routeName
+        2 -> AppDestinations.PROFILE.routeName
+        else -> {
+            AppDestinations.TIMER.routeName
+        }
+    }
+
+    var currentDestination by rememberSaveable { mutableStateOf(startDestination) }
 
     NavigationSuiteScaffold(navigationSuiteItems = {
         AppDestinations.entries.forEach { destination ->
@@ -83,7 +100,7 @@ fun MainNavigationSuiteScaffold(mainNavController: NavHostController) {
         }
     }) {
         NavHost(navController = bottomNavController,
-            startDestination = AppDestinations.TIMER.routeName,
+            startDestination = startDestination,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }) {
             composable(AppDestinations.TIMER.routeName) { TimerDestination() }

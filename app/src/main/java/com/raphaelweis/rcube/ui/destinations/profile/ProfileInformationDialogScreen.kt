@@ -15,26 +15,28 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.raphaelweis.rcube.MainNavigationScaffold
 import com.raphaelweis.rcube.R
+import com.raphaelweis.rcube.ui.AppViewModelProvider
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileInformationDialogScreen(mainNavController: NavHostController) {
-    var username by remember { mutableStateOf("") }
-    var birthdate by remember { mutableStateOf("") }
+fun ProfileInformationDialogScreen(
+    mainNavController: NavHostController,
+    viewModel: ProfileViewModel = viewModel(factory = AppViewModelProvider.Factory),
+) {
+    val username = viewModel.username.collectAsState().value
+    val birthdate = viewModel.birthdate.collectAsState().value
+    val scope = rememberCoroutineScope()
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(navigationIcon = {
@@ -48,7 +50,13 @@ fun ProfileInformationDialogScreen(mainNavController: NavHostController) {
         }, actions = {
             TextButton(
                 content = { Text(stringResource(R.string.save)) },
-                onClick = {},
+                onClick = {
+                    scope.launch {
+                        if (viewModel.saveUser()) {
+                            mainNavController.navigate(MainNavigationScaffold(screenId = 2))
+                        }
+                    }
+                },
             )
         }, title = { Text(stringResource(R.string.profile_information)) })
     }) { paddingValues ->
@@ -62,7 +70,7 @@ fun ProfileInformationDialogScreen(mainNavController: NavHostController) {
             Text(stringResource(R.string.profile_information_dialog_info))
             OutlinedTextField(
                 value = username,
-                onValueChange = { username = it },
+                onValueChange = { viewModel.updateUsername(it) },
                 label = { Text(stringResource(R.string.username)) },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -70,45 +78,10 @@ fun ProfileInformationDialogScreen(mainNavController: NavHostController) {
             OutlinedTextField(
                 value = birthdate,
                 singleLine = true,
-                onValueChange = { birthdate = it },
-                visualTransformation = DateTransformation(),
+                onValueChange = { viewModel.updateBirthdate(it) },
                 label = { Text(stringResource(R.string.date_of_birth)) },
                 modifier = Modifier.fillMaxWidth()
             )
         }
     }
-}
-
-class DateTransformation : VisualTransformation {
-    override fun filter(text: AnnotatedString): TransformedText {
-        return dateFilter(text)
-    }
-}
-
-fun dateFilter(text: AnnotatedString): TransformedText {
-
-    val trimmed = if (text.text.length >= 8) text.text.substring(0..7) else text.text
-    var out = ""
-    for (i in trimmed.indices) {
-        out += trimmed[i]
-        if (i % 2 == 1 && i < 4) out += "/"
-    }
-
-    val numberOffsetTranslator = object : OffsetMapping {
-        override fun originalToTransformed(offset: Int): Int {
-            if (offset <= 1) return offset
-            if (offset <= 3) return offset + 1
-            if (offset <= 8) return offset + 2
-            return 10
-        }
-
-        override fun transformedToOriginal(offset: Int): Int {
-            if (offset <= 2) return offset
-            if (offset <= 5) return offset - 1
-            if (offset <= 10) return offset - 2
-            return 8
-        }
-    }
-
-    return TransformedText(AnnotatedString(out), numberOffsetTranslator)
 }

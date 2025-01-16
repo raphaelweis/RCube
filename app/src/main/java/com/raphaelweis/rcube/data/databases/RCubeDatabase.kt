@@ -5,11 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.raphaelweis.rcube.data.daos.SolvesDAO
+import com.raphaelweis.rcube.data.daos.UsersDAO
 import com.raphaelweis.rcube.data.entities.Solve
+import com.raphaelweis.rcube.data.entities.User
 
-@Database(entities = [Solve::class], version = 1, exportSchema = false)
+@Database(entities = [Solve::class, User::class], version = 2, exportSchema = false)
 abstract class RCubeDatabase : RoomDatabase() {
     abstract fun solvesDAO(): SolvesDAO
+    abstract fun usersDAO(): UsersDAO
 
     companion object {
         @Volatile

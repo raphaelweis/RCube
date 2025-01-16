@@ -22,4 +22,9 @@
     <string name="date_of_birth">Date of birth</string>
     <string name="save">Save</string>
     <string name="profile_information_dialog_info">You must provide your username and date of birth. Your username will be public to all users. Click save once you\'ve entered the required information.</string>
+    <string name="delete_my_data">Delete my data</string>
+    <string name="update_my_data">Update my data</string>
+    <string name="delete_profile">Delete my profile</string>
+    <string name="delete_profile_dialog_body">Your profile and all information associated with it will be deleted. This includes your username, date of birth and all your solves. This action cannot be undone.</string>
+    <string name="delete_profile_dialog_title">Delete profile?</string>
 </resources>

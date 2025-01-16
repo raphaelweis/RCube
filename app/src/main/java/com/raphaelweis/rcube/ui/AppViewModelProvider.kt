@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.raphaelweis.rcube.RCubeApplication
+import com.raphaelweis.rcube.ui.destinations.profile.ProfileViewModel
 import com.raphaelweis.rcube.ui.destinations.solves.SolvesViewModel
 import com.raphaelweis.rcube.ui.destinations.timer.TimerViewModel
 
@@ -17,6 +18,12 @@ object AppViewModelProvider {
         }
         initializer {
             SolvesViewModel(rCubeApplication().container.solvesRepository)
+        }
+        initializer {
+            ProfileViewModel(
+                usersRepository = rCubeApplication().container.usersRepository,
+                context = rCubeApplication().applicationContext
+            )
         }
     }
 }

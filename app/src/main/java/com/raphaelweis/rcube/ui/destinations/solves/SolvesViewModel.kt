@@ -20,7 +20,7 @@ class SolvesViewModel(private val solvesRepository: SolvesRepository) : ViewMode
             initialValue = SolvesUiState()
         )
 
-    val solvesRepositoryScope = CoroutineScope(Dispatchers.Default)
+    private val solvesRepositoryScope = CoroutineScope(Dispatchers.Default)
 
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
