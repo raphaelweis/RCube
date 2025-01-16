@@ -49,7 +49,7 @@ fun MainScreen() {
                 composable<ProfileInformationDialog>(enterTransition = {
                     slideInVertically(initialOffsetY = { it })
                 }, exitTransition = { slideOutVertically(targetOffsetY = { it }) }) {
-                    ProfileInformationDialogScreen()
+                    ProfileInformationDialogScreen(mainNavController)
                 }
             }
         }
