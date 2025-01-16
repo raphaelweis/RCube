@@ -18,4 +18,8 @@
     <string name="cancel">Cancel</string>
     <string name="profile_information">Profile information</string>
     <string name="no_solves">You haven\'t done any solves yet.</string>
+    <string name="username">Username</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="save">Save</string>
+    <string name="profile_information_dialog_info">You must provide your username and date of birth. Your username will be public to all users. Click save once you\'ve entered the required information.</string>
 </resources>
