@@ -14,5 +14,4 @@ latest Android API, which,
 at the time of writing this is [API 35](https://developer.android.com/tools/releases/platforms#15).
 The application also uses the Jetpack Compose framework for
 it's UI, and the [Room approach](https://developer.android.com/training/data-storage/room) to manage
-it's local data. It it compliant with
-the [GDPR guidelines](https://gdpr-info.eu/).
+it's local data.
