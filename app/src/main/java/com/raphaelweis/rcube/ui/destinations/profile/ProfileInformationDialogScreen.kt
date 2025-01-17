@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -37,10 +38,16 @@ fun ProfileInformationDialogScreen(
     val username = viewModel.username.collectAsState().value
     val birthdate = viewModel.birthdate.collectAsState().value
     val scope = rememberCoroutineScope()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(navigationIcon = {
-            IconButton(onClick = { mainNavController.popBackStack() }) {
+            IconButton(onClick = {
+                scope.launch {
+                    keyboardController?.hide()
+                    mainNavController.popBackStack()
+                }
+            }) {
                 Icon(
                     painter = painterResource(R.drawable.close_outlined),
                     contentDescription = "hello",
@@ -53,6 +60,7 @@ fun ProfileInformationDialogScreen(
                 onClick = {
                     scope.launch {
                         if (viewModel.saveUser()) {
+                            keyboardController?.hide()
                             mainNavController.navigate(MainNavigationScaffold(screenId = 2))
                         }
                     }
