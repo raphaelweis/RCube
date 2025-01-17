@@ -16,10 +16,10 @@ interface SolvesDAO {
     suspend fun update(solve: Solve)
 
     @Query("DELETE FROM solves WHERE id = :id")
-    suspend fun delete(id: Int)
+    suspend fun delete(id: Long)
 
     @Query("SELECT * FROM solves WHERE id = :id")
-    fun getSolve(id: Int): Flow<Solve>
+    fun getSolve(id: Long): Flow<Solve>
 
     @Query("SELECT * FROM solves ORDER BY date DESC")
     fun getAllSolves(): Flow<List<Solve>>

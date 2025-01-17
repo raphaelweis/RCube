@@ -26,7 +26,7 @@ class SolvesViewModel(private val solvesRepository: SolvesRepository) : ViewMode
         private const val TIMEOUT_MILLIS = 5_000L
     }
 
-    fun deleteSolve(id: Int) {
+    fun deleteSolve(id: Long) {
         solvesRepositoryScope.launch {
             solvesRepository.deleteSolve(id)
         }

@@ -1,8 +1,10 @@
 package com.raphaelweis.rcube.ui.destinations.timer
 
+import android.content.Context
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.raphaelweis.rcube.data.PreferencesHelper
 import com.raphaelweis.rcube.data.entities.Solve
 import com.raphaelweis.rcube.data.repositories.SolvesRepository
 import kotlinx.coroutines.CoroutineScope
@@ -11,7 +13,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.worldcubeassociation.tnoodle.scrambles.PuzzleRegistry
 
-class TimerViewModel(private val solvesRepository: SolvesRepository) : ViewModel() {
+class TimerViewModel(private val solvesRepository: SolvesRepository, context: Context) :
+    ViewModel() {
     var isSolving = mutableStateOf(false)
     var elapsedTime = mutableLongStateOf(0L)
     var currentScramble = mutableStateOf("")
@@ -21,6 +24,7 @@ class TimerViewModel(private val solvesRepository: SolvesRepository) : ViewModel
     private val timerScope = CoroutineScope(Dispatchers.Default)
     private val scrambleScope = CoroutineScope(Dispatchers.Default)
     private val solvesRepositoryScope = CoroutineScope(Dispatchers.Default)
+    private val preferencesHelper = PreferencesHelper(context = context)
 
     init {
         getNewScramble()
@@ -55,11 +59,14 @@ class TimerViewModel(private val solvesRepository: SolvesRepository) : ViewModel
         isSolving.value = false
 
         solvesRepositoryScope.launch {
+            val userId = preferencesHelper.getUserId()
+
             solvesRepository.insertSolve(
                 Solve(
                     time = elapsedTime.longValue,
                     date = System.currentTimeMillis(),
-                    scramble = formerScramble
+                    scramble = formerScramble,
+                    userId = userId
                 )
             )
         }
