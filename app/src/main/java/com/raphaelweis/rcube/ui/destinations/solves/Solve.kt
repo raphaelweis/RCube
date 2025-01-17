@@ -34,6 +34,8 @@ fun Solve(
     time: Long,
     date: Long,
     scramble: String,
+    plusTwo: Boolean,
+    dnf: Boolean,
     viewModel: SolvesViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val showDeleteDialog = remember { mutableStateOf(false) }
@@ -42,13 +44,14 @@ fun Solve(
         shape = RoundedCornerShape(8.dp), modifier = Modifier.fillMaxWidth()
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(16.dp)
+            verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(16.dp)
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        text = formatSolveTime(time),
+                        text = if (dnf) "DNF"
+                        else if (plusTwo) "${formatSolveTime(time + 2000)} +"
+                        else formatSolveTime(time),
                         style = MaterialTheme.typography.headlineLarge,
                         modifier = Modifier.weight(1f)
                     )
@@ -80,11 +83,9 @@ fun Solve(
     }
 
     if (showDeleteDialog.value) {
-        DeleteSolveDialog(
-            onDismiss = { showDeleteDialog.value = false },
-            onConfirm = {
-                showDeleteDialog.value = false
-                viewModel.deleteSolve(id)
-            })
+        DeleteSolveDialog(onDismiss = { showDeleteDialog.value = false }, onConfirm = {
+            showDeleteDialog.value = false
+            viewModel.deleteSolve(id)
+        })
     }
 }

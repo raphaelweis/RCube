@@ -8,7 +8,7 @@ interface SolvesRepository {
 
     fun getSolveStream(id: Long): Flow<Solve?>
 
-    suspend fun insertSolve(solve: Solve)
+    suspend fun insertSolve(solve: Solve): Long
 
     suspend fun deleteSolve(id: Long)
 

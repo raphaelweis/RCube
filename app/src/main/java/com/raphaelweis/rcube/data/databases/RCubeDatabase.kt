@@ -9,7 +9,7 @@ import com.raphaelweis.rcube.data.daos.UsersDAO
 import com.raphaelweis.rcube.data.entities.Solve
 import com.raphaelweis.rcube.data.entities.User
 
-@Database(entities = [Solve::class, User::class], version = 3, exportSchema = false)
+@Database(entities = [Solve::class, User::class], version = 4, exportSchema = false)
 abstract class RCubeDatabase : RoomDatabase() {
     abstract fun solvesDAO(): SolvesDAO
     abstract fun usersDAO(): UsersDAO

@@ -23,12 +23,14 @@ class TimerViewModel(private val solvesRepository: SolvesRepository, context: Co
     var currentScrambleSvg = mutableStateOf("")
 
     var totalSolveCount = mutableIntStateOf(0)
-    var bestSolveTime = mutableStateOf<Long?>(0)
-    var averageSolveTime = mutableStateOf<Long?>(0)
+    var bestSolveTime = mutableStateOf<Long?>(null)
+    var averageSolveTime = mutableStateOf<Long?>(null)
 
     var currentAo5 = mutableStateOf<Long?>(null)
     var currentAo12 = mutableStateOf<Long?>(null)
     var currentAo100 = mutableStateOf<Long?>(null)
+
+    var currentSolve = mutableStateOf<Solve?>(null)
 
     private var formerScramble = ""
     private val scrambler = PuzzleRegistry.THREE.scrambler
@@ -48,6 +50,8 @@ class TimerViewModel(private val solvesRepository: SolvesRepository, context: Co
                 totalSolveCount.intValue = count
             }
         }
+
+        if (totalSolveCount.intValue == 0) return
 
         viewModelScope.launch {
             solvesRepository.getBestSolve().collect { time ->
@@ -135,16 +139,52 @@ class TimerViewModel(private val solvesRepository: SolvesRepository, context: Co
         solvesRepositoryScope.launch {
             val userId = preferencesHelper.getUserId()
 
-            solvesRepository.insertSolve(
-                Solve(
-                    time = elapsedTime.longValue,
-                    date = System.currentTimeMillis(),
-                    scramble = formerScramble,
-                    userId = userId
-                )
+            val newSolve = Solve(
+                time = elapsedTime.longValue,
+                date = System.currentTimeMillis(),
+                scramble = formerScramble,
+                plusTwo = false,
+                dnf = false,
+                userId = userId
             )
 
+            val solveId = solvesRepository.insertSolve(newSolve)
+
+            currentSolve.value = newSolve.copy(id = solveId)
+
             loadSolveData()
+        }
+    }
+
+    fun togglePlusTwo() {
+        solvesRepositoryScope.launch {
+            currentSolve.value?.let { currentSolveNonNull ->
+                currentSolve.value =
+                    currentSolveNonNull.copy(plusTwo = !currentSolveNonNull.plusTwo)
+
+                solvesRepository.updateSolve(currentSolve.value!!)
+            }
+        }
+    }
+
+    fun toggleDnf() {
+        solvesRepositoryScope.launch {
+            currentSolve.value?.let { currentSolveNonNull ->
+                currentSolve.value = currentSolveNonNull.copy(dnf = !currentSolveNonNull.dnf)
+
+                solvesRepository.updateSolve(currentSolve.value!!)
+            }
+        }
+    }
+
+    fun deleteCurrentSolve() {
+        solvesRepositoryScope.launch {
+            currentSolve.value?.let { currentSolveNonNull ->
+                solvesRepository.deleteSolve(currentSolveNonNull.id)
+
+                currentSolve.value = null
+                elapsedTime.longValue = 0
+            }
         }
     }
 }

@@ -17,5 +17,7 @@ data class Solve(
     val time: Long,
     val date: Long,
     val scramble: String,
+    val plusTwo: Boolean,
+    val dnf: Boolean,
     val userId: Long?,
 )

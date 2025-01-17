@@ -36,7 +36,12 @@ fun SolvesDestination(viewModel: SolvesViewModel = viewModel(factory = AppViewMo
         ) {
             items(items = solvesUiState.value.solvesList, key = { it.id }) { item ->
                 Solve(
-                    id = item.id, time = item.time, date = item.date, scramble = item.scramble
+                    id = item.id,
+                    time = item.time,
+                    date = item.date,
+                    scramble = item.scramble,
+                    plusTwo = item.plusTwo,
+                    dnf = item.dnf
                 )
             }
         }

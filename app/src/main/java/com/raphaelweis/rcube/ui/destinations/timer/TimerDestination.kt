@@ -103,6 +103,24 @@ fun TimerDestination(viewModel: TimerViewModel = viewModel(factory = AppViewMode
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
+                        SolveStat(text = "${stringResource(R.string.best)}: ${
+                            viewModel.bestSolveTime.value?.let { bestSolveTime ->
+                                formatSolveTime(bestSolveTime)
+                            } ?: "--.--"
+                        }")
+                        SolveStat(text = "${stringResource(R.string.mean)}: ${
+                            viewModel.averageSolveTime.value?.let { averageSolveTime ->
+                                formatSolveTime(averageSolveTime)
+                            } ?: "--.--"
+                        }")
+                        SolveStat(
+                            text = "${stringResource(R.string.count)}: ${viewModel.totalSolveCount.intValue}"
+                        )
+                    }
+                    ScrambleImage()
+                    Column(
+                        horizontalAlignment = Alignment.End, modifier = Modifier.weight(1f)
+                    ) {
                         SolveStat(text = "${stringResource(R.string.ao5)}: ${
                             viewModel.currentAo5.value?.let { currentAo5 ->
                                 formatSolveTime(currentAo5)
@@ -118,24 +136,6 @@ fun TimerDestination(viewModel: TimerViewModel = viewModel(factory = AppViewMode
                                 formatSolveTime(currentAo100)
                             } ?: "--.--"
                         }")
-                    }
-                    ScrambleImage()
-                    Column(
-                        horizontalAlignment = Alignment.End, modifier = Modifier.weight(1f)
-                    ) {
-                        SolveStat(text = "${stringResource(R.string.best)}: ${
-                            viewModel.bestSolveTime.value?.let { bestSolveTime ->
-                                formatSolveTime(bestSolveTime)
-                            } ?: "--.--"
-                        }")
-                        SolveStat(text = "${stringResource(R.string.mean)}: ${
-                            viewModel.averageSolveTime.value?.let { averageSolveTime ->
-                                formatSolveTime(averageSolveTime)
-                            } ?: "--.--"
-                        }")
-                        SolveStat(
-                            text = "${stringResource(R.string.count)}: ${viewModel.totalSolveCount.intValue}"
-                        )
                     }
                 }
             }
