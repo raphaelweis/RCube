@@ -30,7 +30,7 @@ import java.util.Locale
 
 @Composable
 fun Solve(
-    id: Int,
+    id: Long,
     time: Long,
     date: Long,
     scramble: String,

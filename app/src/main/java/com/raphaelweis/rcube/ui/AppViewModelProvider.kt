@@ -14,7 +14,10 @@ import com.raphaelweis.rcube.ui.destinations.timer.TimerViewModel
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
-            TimerViewModel(rCubeApplication().container.solvesRepository)
+            TimerViewModel(
+                solvesRepository = rCubeApplication().container.solvesRepository,
+                context = rCubeApplication().applicationContext
+            )
         }
         initializer {
             SolvesViewModel(rCubeApplication().container.solvesRepository)

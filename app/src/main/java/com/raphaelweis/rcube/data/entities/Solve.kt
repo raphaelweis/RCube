@@ -1,12 +1,21 @@
 package com.raphaelweis.rcube.data.entities
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "solves")
+@Entity(
+    tableName = "solves", foreignKeys = [ForeignKey(
+        entity = User::class,
+        parentColumns = ["id"],
+        childColumns = ["userId"],
+        onDelete = ForeignKey.CASCADE
+    )]
+)
 data class Solve(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val time: Long,
     val date: Long,
-    val scramble: String
+    val scramble: String,
+    val userId: Long?,
 )
