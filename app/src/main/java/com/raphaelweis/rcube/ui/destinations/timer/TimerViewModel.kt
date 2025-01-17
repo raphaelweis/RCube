@@ -18,6 +18,7 @@ class TimerViewModel(private val solvesRepository: SolvesRepository, context: Co
     var isSolving = mutableStateOf(false)
     var elapsedTime = mutableLongStateOf(0L)
     var currentScramble = mutableStateOf("")
+    var currentScrambleSvg = mutableStateOf("")
 
     private var formerScramble = ""
     private val scrambler = PuzzleRegistry.THREE.scrambler
@@ -52,6 +53,8 @@ class TimerViewModel(private val solvesRepository: SolvesRepository, context: Co
         currentScramble.value = ""
         scrambleScope.launch {
             currentScramble.value = scrambler.generateScramble()
+            currentScrambleSvg.value =
+                scrambler.drawScramble(currentScramble.value, null).toString()
         }
     }
 
