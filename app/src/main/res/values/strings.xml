@@ -28,4 +28,10 @@
     <string name="delete_profile_dialog_body">Your profile and all information associated with it will be deleted. This includes your username, date of birth and all your solves. This action cannot be undone.</string>
     <string name="delete_profile_dialog_title">Delete profile?</string>
     <string name="svg_image_of_scramble">SVG representation for the current scramble.</string>
+    <string name="best">Best</string>
+    <string name="ao5">Ao5</string>
+    <string name="ao12">Ao12</string>
+    <string name="ao100">Ao100</string>
+    <string name="mean">Mean</string>
+    <string name="count">Count</string>
 </resources>

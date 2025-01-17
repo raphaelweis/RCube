@@ -30,15 +30,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.raphaelweis.rcube.R
+import com.raphaelweis.rcube.formatSolveTime
 import com.raphaelweis.rcube.ui.AppViewModelProvider
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimerDestination() {
-    val timerViewModel: TimerViewModel = viewModel(factory = AppViewModelProvider.Factory)
-
+fun TimerDestination(viewModel: TimerViewModel = viewModel(factory = AppViewModelProvider.Factory)) {
     val timerDelayScope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
 
@@ -56,8 +55,8 @@ fun TimerDestination() {
             .fillMaxSize()
             .pointerInput(Unit) {
                 detectTapGestures(onPress = {
-                    if (timerViewModel.isSolving.value) {
-                        timerViewModel.stopTimer()
+                    if (viewModel.isSolving.value) {
+                        viewModel.stopTimer()
                         return@detectTapGestures
                     }
 
@@ -79,17 +78,17 @@ fun TimerDestination() {
                     timerColor = initialTimerColor
 
                     if (isProperlyReleased && timerReady) {
-                        timerViewModel.startTimer()
+                        viewModel.startTimer()
                     }
                 })
             }, contentAlignment = Alignment.Center, content = {
-            if (!timerViewModel.isSolving.value) Scramble(
-                paddingValues, viewModel = timerViewModel
+            if (!viewModel.isSolving.value) Scramble(
+                paddingValues, viewModel = viewModel
             )
             Timer(
-                paddingValues, timerColor, viewModel = timerViewModel
+                paddingValues, timerColor, viewModel = viewModel
             )
-            if (!timerViewModel.isSolving.value) Card(
+            if (!viewModel.isSolving.value) Card(
                 modifier = Modifier
                     .padding(paddingValues)
                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
@@ -104,18 +103,39 @@ fun TimerDestination() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        SolveStat(text = "Ao5: 10.71")
-                        SolveStat(text = "Ao12: 10.56")
-                        SolveStat(text = "Ao100: 11.12")
+                        SolveStat(text = "${stringResource(R.string.ao5)}: ${
+                            viewModel.currentAo5.value?.let { currentAo5 ->
+                                formatSolveTime(currentAo5)
+                            } ?: "--.--"
+                        }")
+                        SolveStat(text = "${stringResource(R.string.ao12)}: ${
+                            viewModel.currentAo12.value?.let { currentAo12 ->
+                                formatSolveTime(currentAo12)
+                            } ?: "--.--"
+                        }")
+                        SolveStat(text = "${stringResource(R.string.ao100)}: ${
+                            viewModel.currentAo100.value?.let { currentAo100 ->
+                                formatSolveTime(currentAo100)
+                            } ?: "--.--"
+                        }")
                     }
                     ScrambleImage()
                     Column(
-                        horizontalAlignment = Alignment.End,
-                        modifier = Modifier.weight(1f)
+                        horizontalAlignment = Alignment.End, modifier = Modifier.weight(1f)
                     ) {
-                        SolveStat(text = "Best: 6.47")
-                        SolveStat(text = "Mean: 11.68")
-                        SolveStat(text = "Count: 2862")
+                        SolveStat(text = "${stringResource(R.string.best)}: ${
+                            viewModel.bestSolveTime.value?.let { bestSolveTime ->
+                                formatSolveTime(bestSolveTime)
+                            } ?: "--.--"
+                        }")
+                        SolveStat(text = "${stringResource(R.string.mean)}: ${
+                            viewModel.averageSolveTime.value?.let { averageSolveTime ->
+                                formatSolveTime(averageSolveTime)
+                            } ?: "--.--"
+                        }")
+                        SolveStat(
+                            text = "${stringResource(R.string.count)}: ${viewModel.totalSolveCount.intValue}"
+                        )
                     }
                 }
             }
