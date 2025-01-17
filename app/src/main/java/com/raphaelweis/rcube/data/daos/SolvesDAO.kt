@@ -23,4 +23,16 @@ interface SolvesDAO {
 
     @Query("SELECT * FROM solves ORDER BY date DESC")
     fun getAllSolves(): Flow<List<Solve>>
+
+    @Query("SELECT time FROM solves ORDER BY date DESC LIMIT :count")
+    fun getLastXSolves(count: Int): Flow<List<Long>>
+
+    @Query("SELECT time FROM solves ORDER BY time ASC LIMIT 1")
+    fun getBestSolveTime(): Flow<Long>
+
+    @Query("SELECT AVG(time) FROM solves")
+    fun getAverageSolveTime(): Flow<Long>
+
+    @Query("SELECT COUNT(*) FROM solves")
+    fun getTotalSolveCount(): Flow<Int>
 }

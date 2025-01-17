@@ -13,4 +13,12 @@ interface SolvesRepository {
     suspend fun deleteSolve(id: Long)
 
     suspend fun updateSolve(solve: Solve)
+
+    suspend fun getLastXSolvesStream(count: Int): Flow<List<Long>>
+
+    suspend fun getBestSolve(): Flow<Long>
+
+    suspend fun getAverageSolveTime(): Flow<Long>
+
+    suspend fun getTotalSolveCount(): Flow<Int>
 }

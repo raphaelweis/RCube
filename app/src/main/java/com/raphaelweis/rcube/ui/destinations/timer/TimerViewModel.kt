@@ -1,9 +1,11 @@
 package com.raphaelweis.rcube.ui.destinations.timer
 
 import android.content.Context
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.raphaelweis.rcube.data.PreferencesHelper
 import com.raphaelweis.rcube.data.entities.Solve
 import com.raphaelweis.rcube.data.repositories.SolvesRepository
@@ -20,6 +22,14 @@ class TimerViewModel(private val solvesRepository: SolvesRepository, context: Co
     var currentScramble = mutableStateOf("")
     var currentScrambleSvg = mutableStateOf("")
 
+    var totalSolveCount = mutableIntStateOf(0)
+    var bestSolveTime = mutableStateOf<Long?>(0)
+    var averageSolveTime = mutableStateOf<Long?>(0)
+
+    var currentAo5 = mutableStateOf<Long?>(null)
+    var currentAo12 = mutableStateOf<Long?>(null)
+    var currentAo100 = mutableStateOf<Long?>(null)
+
     private var formerScramble = ""
     private val scrambler = PuzzleRegistry.THREE.scrambler
     private val timerScope = CoroutineScope(Dispatchers.Default)
@@ -29,6 +39,67 @@ class TimerViewModel(private val solvesRepository: SolvesRepository, context: Co
 
     init {
         getNewScramble()
+        loadSolveData()
+    }
+
+    private fun loadSolveData() {
+        viewModelScope.launch {
+            solvesRepository.getTotalSolveCount().collect { count ->
+                totalSolveCount.intValue = count
+            }
+        }
+
+        viewModelScope.launch {
+            solvesRepository.getBestSolve().collect { time ->
+                bestSolveTime.value = time
+            }
+        }
+
+        viewModelScope.launch {
+            solvesRepository.getAverageSolveTime().collect { averageTime ->
+                averageSolveTime.value = averageTime
+            }
+        }
+
+        viewModelScope.launch {
+            val averageSize = 5
+            solvesRepository.getLastXSolvesStream(averageSize).collect { solves ->
+                if (solves.size == averageSize) {
+                    currentAo5.value = computeAverageOf(solves)
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            val averageSize = 12
+            solvesRepository.getLastXSolvesStream(averageSize).collect { solves ->
+                if (solves.size == averageSize) {
+                    currentAo12.value = computeAverageOf(solves)
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            val averageSize = 100
+            solvesRepository.getLastXSolvesStream(averageSize).collect { solves ->
+                if (solves.size == averageSize) {
+                    currentAo100.value = computeAverageOf(solves)
+                }
+            }
+        }
+    }
+
+    private fun computeAverageOf(solves: List<Long>): Long {
+        val sortedSolves = solves.sorted()
+
+        val withoutFirst = sortedSolves.drop(1)
+        val withoutLastAndFirst = withoutFirst.dropLast(1)
+
+        var sum: Long = 0
+
+        for (solve in withoutLastAndFirst) sum += solve
+
+        return sum / withoutLastAndFirst.size
     }
 
     fun startTimer() {
@@ -72,6 +143,8 @@ class TimerViewModel(private val solvesRepository: SolvesRepository, context: Co
                     userId = userId
                 )
             )
+
+            loadSolveData()
         }
     }
 }
