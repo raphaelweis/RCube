@@ -9,7 +9,7 @@ class OfflineSolvesRepository(private val solvesDAO: SolvesDAO) : SolvesReposito
 
     override fun getSolveStream(id: Long): Flow<Solve?> = solvesDAO.getSolve(id)
 
-    override suspend fun insertSolve(solve: Solve) = solvesDAO.insert(solve)
+    override suspend fun insertSolve(solve: Solve): Long = solvesDAO.insert(solve)
 
     override suspend fun deleteSolve(id: Long) = solvesDAO.delete(id)
 
