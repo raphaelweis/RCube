@@ -82,6 +82,7 @@ fun TimerDestination() {
             Timer(
                 paddingValues, timerColor, viewModel = timerViewModel
             )
+            ScrambleImage()
         })
     })
 }

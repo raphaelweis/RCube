@@ -69,6 +69,9 @@ dependencies {
 
     implementation(libs.lib.scrambles)
 
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

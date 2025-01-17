@@ -56,6 +56,8 @@ class ProfileViewModel(private val usersRepository: UsersRepository, context: Co
             _user.value = null
             _username.value = ""
             _birthdate.value = ""
+
+            preferencesHelper.deleteUserId()
         }
     }
 
